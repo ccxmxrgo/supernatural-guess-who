@@ -68,17 +68,17 @@ const ok = (c, m) => { if (!c) { fail++; console.error('FAIL', m); } else consol
   await p.goto(BASE + '#history');
   ok(await p.locator('.log li').count() === 2, 'history lists both rounds');
   await p.goto(BASE + '#top');
-  ok((await p.textContent('#daily')).includes('Resolvido em 2 de 6'), 'home shows today\'s solved daily');
+  ok(await p.locator('.mode.is-win').count() === 1 && await p.locator('.mode.is-miss').count() === 1, 'home marks today\'s solved and missed cases');
 
   // language switch: Portuguese by default, English on request, remembered
-  ok((await p.textContent('#daily-h')).includes('Casos de hoje'), 'the site starts in Portuguese');
-  await p.click('.nav__tool[data-lang]');
-  ok((await p.textContent('#daily-h')).includes("Today's cases"), 'the switch turns it to English');
+  ok((await p.textContent('.title__day')).includes('Caso nº'), 'the site starts in Portuguese');
+  await p.click('.tool--lang');
+  ok((await p.textContent('.title__day')).includes('Case no.'), 'the switch turns it to English');
   await p.reload();
   ok((await p.getAttribute('html', 'lang')) === 'en', 'the language choice is remembered');
   await p.goto(BASE + '#play-whoami');
   ok((await p.textContent('.game h1')) === 'Who Am I?', 'mode names follow the language');
-  await p.goto(BASE + '#top'); await p.click('.nav__tool[data-lang]');
+  await p.goto(BASE + '#top'); await p.click('.tool--lang');
 
   // phone layout: no sideways scroll
   await p.setViewportSize({ width: 375, height: 800 });

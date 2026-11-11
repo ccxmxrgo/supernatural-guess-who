@@ -14,10 +14,12 @@ export const characterPool = level => byLevel(CHARACTERS, level);
 
 /** Feedback for a wrong character guess: same species? earlier or later debut? */
 export function characterChips(guess, answer) {
-  const chips = [{ text: species(guess.species), ok: guess.species === answer.species }];
   const d = answer.first.s - guess.first.s;
-  chips.push({ text: t(d === 0 ? 'chip.season' : d > 0 ? 'chip.later' : 'chip.earlier', { s: guess.first.s }), ok: d === 0 });
-  return chips;
+  return [
+    { label: t('c.species'), text: species(guess.species), ok: guess.species === answer.species },
+    { label: t('c.firstSeen'), text: t('chip.s', { s: guess.first.s }), ok: d === 0, dir: d > 0 ? 'up' : d < 0 ? 'down' : null,
+      sr: t(d === 0 ? 'chip.season' : d > 0 ? 'chip.later' : 'chip.earlier', { s: guess.first.s }) },
+  ];
 }
 
 /**

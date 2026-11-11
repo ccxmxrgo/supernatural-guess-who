@@ -23,6 +23,7 @@ export default {
   board: (ep, st) => clueList(clues(ep), st.done ? 6 : Math.min(6, st.wrong + 1), st.fresh),
   chips(guess, ep) {
     const d = ep.s - guess.s;
-    return [{ text: t(d === 0 ? 'chip.epRight' : d > 0 ? 'chip.epLater' : 'chip.epEarlier', { s: guess.s }), ok: d === 0 }];
+    return [{ label: t('ep.season'), text: t('chip.s', { s: guess.s }), ok: d === 0, dir: d > 0 ? 'up' : d < 0 ? 'down' : null,
+      sr: t(d === 0 ? 'chip.epRight' : d > 0 ? 'chip.epLater' : 'chip.epEarlier', { s: guess.s }) }];
   },
 };

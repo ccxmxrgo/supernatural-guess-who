@@ -56,7 +56,7 @@ const S = {
     'close.h': "Today's character is waiting", 'close.lead': 'Six guesses. Same answer for everyone until midnight UTC.', 'close.word': 'Guess Who?',
     'foot.play': 'Play', 'foot.you': 'You', 'foot.game': 'Game', 'foot.quotes': 'Quotes', 'foot.episodes': 'Episodes',
     'foot.legal': 'Unofficial fan game. Not affiliated with or endorsed by Warner Bros., The CW or Kripke Enterprises. Supernatural and its characters belong to their owners.',
-    'foot.credits': 'Photographs via Wikimedia Commons',
+    'foot.credits': 'Image credits',
 
     'game.allModes': 'All modes', 'game.daily': 'Daily', 'game.easy': 'Easy', 'game.medium': 'Medium', 'game.hard': 'Hard',
     'game.roundType': 'Round type',
@@ -105,7 +105,9 @@ const S = {
     'quote.note': 'A wrong guess opens a hint about the speaker.',
     'ep.case': 'The case', 'ep.season': 'Season', 'ep.seasonV': 'Season {s}.', 'ep.setting': 'Setting', 'ep.against': 'What you are up against', 'ep.happens': 'What happens', 'ep.giveaway': 'The giveaway',
     'photo.credit': 'Photo: {by}, {licence}',
-    'foot.actorCredits': 'actor photo credits', 'hero.photoAlt': 'An empty gravel road under a dark cliff at dusk', 'files.photos': 'Actor photographs',
+    'foot.actorCredits': 'see the list', 'hero.photoAlt': 'An empty gravel road under a dark cliff at dusk', 'files.photos': 'Actor photographs',
+    'home.case': 'Case no. {day}', 'home.today': 'Solved today',
+    'chip.s': 'S{s}', 'game.headChar': 'Character', 'game.headEp': 'Episode',
     'title.home': 'Supernatural Guess Who?: a daily character guessing game for fans',
   },
   pt: {
@@ -147,7 +149,7 @@ const S = {
     'close.h': 'O personagem de hoje está esperando', 'close.lead': 'Seis chutes. A mesma resposta para todo mundo até meia-noite UTC.', 'close.word': 'Guess Who?',
     'foot.play': 'Jogar', 'foot.you': 'Você', 'foot.game': 'Jogo', 'foot.quotes': 'Frases', 'foot.episodes': 'Episódios',
     'foot.legal': 'Jogo de fã, não oficial. Sem ligação com Warner Bros., The CW ou Kripke Enterprises. Supernatural e seus personagens pertencem aos seus donos.',
-    'foot.credits': 'Fotos via Wikimedia Commons',
+    'foot.credits': 'Créditos das imagens',
 
     'game.allModes': 'Todos os modos', 'game.daily': 'Diário', 'game.easy': 'Fácil', 'game.medium': 'Médio', 'game.hard': 'Difícil',
     'game.roundType': 'Tipo de rodada',
@@ -196,7 +198,9 @@ const S = {
     'quote.note': 'Cada erro abre uma dica sobre quem falou.',
     'ep.case': 'O caso', 'ep.season': 'Temporada', 'ep.seasonV': 'Temporada {s}.', 'ep.setting': 'Lugar', 'ep.against': 'Contra o quê', 'ep.happens': 'O que acontece', 'ep.giveaway': 'A entregada',
     'photo.credit': 'Foto: {by}, {licence}',
-    'foot.actorCredits': 'créditos das fotos dos atores', 'hero.photoAlt': 'Uma estrada de cascalho vazia sob um penhasco escuro ao entardecer', 'files.photos': 'Fotos dos atores',
+    'foot.actorCredits': 'ver a lista', 'hero.photoAlt': 'Uma estrada de cascalho vazia sob um penhasco escuro ao entardecer', 'files.photos': 'Fotos dos atores',
+    'home.case': 'Caso nº {day}', 'home.today': 'Resolvidos hoje',
+    'chip.s': 'T{s}', 'game.headChar': 'Personagem', 'game.headEp': 'Episódio',
     'title.home': 'Supernatural Guess Who?: um jogo diário de adivinhação para fãs',
   },
 };

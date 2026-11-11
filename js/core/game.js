@@ -26,7 +26,8 @@ import { play } from '../lib/sound.js';
 import { shareText } from '../lib/share.js';
 import { t } from '../lib/i18n.js';
 import { species } from '../data/loc.js';
-import { modeName } from '../modes/index.js';
+import { MODES, isAvailable, modeName } from '../modes/index.js';
+import { ICONS } from '../views/icons.js';
 
 const byId = new Map([...CHARACTERS, ...EPISODES].map(x => [x.id, x]));
 export const lookup = id => byId.get(id);
@@ -62,29 +63,25 @@ export function mountGame(root, mode, { daily = true, level = 'medium' } = {}) {
 
   root.innerHTML = `
     <section class="game" aria-labelledby="game-h" data-mode="${mode.id}">
-      <div class="wrap">
-        <div class="game__head">
-          <a class="link game__back" href="#modes">${t('game.allModes')}</a>
-          <h1 id="game-h">${escapeHtml(name)}</h1>
-          <p class="game__meta"></p>
-          <div class="game__switch" role="group" aria-label="${t('game.roundType')}">
-            <a class="seg${daily ? ' is-on' : ''}" href="#play-${mode.id}" ${daily ? 'aria-current="page"' : ''}>${t('game.daily')}</a>
-            ${LEVELS.map(v => `<a class="seg${!daily && level === v ? ' is-on' : ''}" href="#play-${mode.id}-${v}" ${!daily && level === v ? 'aria-current="page"' : ''}>${t('game.' + v)}</a>`).join('')}
-          </div>
+      <nav class="modebar" aria-label="${t('nav.modes')}">
+        ${MODES.map(m => `<a class="modebar__btn${m.id === mode.id ? ' is-on' : ''}${isAvailable(m) ? '' : ' is-off'}" href="#play-${m.id}" title="${escapeHtml(modeName(m))}" ${m.id === mode.id ? 'aria-current="page"' : ''}>${ICONS[m.id]}<span class="sr-only">${escapeHtml(modeName(m))}</span></a>`).join('')}
+      </nav>
+      <header class="game__head">
+        <h1 id="game-h">${escapeHtml(name)}</h1>
+        <p class="game__meta"></p>
+        <div class="seg-row" role="group" aria-label="${t('game.roundType')}">
+          <a class="seg${daily ? ' is-on' : ''}" href="#play-${mode.id}" ${daily ? 'aria-current="page"' : ''}>${t('game.daily')}</a>
+          ${LEVELS.map(v => `<a class="seg${!daily && level === v ? ' is-on' : ''}" href="#play-${mode.id}-${v}" ${!daily && level === v ? 'aria-current="page"' : ''}>${t('game.' + v)}</a>`).join('')}
         </div>
-        <div class="game__grid">
-          <div class="game__main">
-            <div class="board" aria-live="polite"></div>
-            <div class="game__input"></div>
-            <ol class="pips" aria-label="${t('game.used')}"></ol>
-          </div>
-          <aside class="game__side" aria-labelledby="tries-h">
-            <h2 id="tries-h" class="game__side-h">${t('game.guesses')}</h2>
-            <ol class="tries"></ol>
-          </aside>
-        </div>
-        <div class="result" hidden></div>
-      </div>
+      </header>
+      <div class="page-card board" aria-live="polite"></div>
+      <div class="game__input"></div>
+      <ol class="pips" aria-label="${t('game.used')}"></ol>
+      <div class="result" hidden></div>
+      <section class="tries-wrap" aria-labelledby="tries-h">
+        <h2 id="tries-h" class="sr-only">${t('game.guesses')}</h2>
+        <div class="tries"></div>
+      </section>
     </section>`;
 
   const $ = s => root.querySelector(s);
@@ -113,18 +110,21 @@ export function mountGame(root, mode, { daily = true, level = 'medium' } = {}) {
   }
 
   function renderTries(animateLast = false) {
-    const wrong = st.guesses.filter(g => g !== target.id);
-    tries.innerHTML = wrong.length
-      ? wrong.map((id, i) => {
+    const list = [...st.guesses].reverse();
+    if (!list.length) { tries.innerHTML = `<p class="tries__empty">${escapeHtml(t('game.noGuesses'))}</p>`; }
+    else {
+      const head = (mode.chips?.(lookup(list[0]), target) ?? []).map(c => `<span>${escapeHtml(c.label)}</span>`).join('');
+      tries.innerHTML = `<div class="tries__head" aria-hidden="true"><span>${escapeHtml(t(mode.kind === 'episode' ? 'game.headEp' : 'game.headChar'))}</span>${head}</div>
+        <ol class="tries__list">${list.map((id, i) => {
           const g = lookup(id);
-          const chips = mode.chips?.(g, target) ?? [];
-          return `<li class="try${animateLast && i === wrong.length - 1 ? ' is-new' : ''}">
-            <span class="try__n">${st.guesses.indexOf(id) + 1}</span>
-            <s class="try__name">${escapeHtml(g.name ?? g.title)}</s>
-            ${chips.length ? `<span class="try__chips">${chips.map(c => `<span class="chip ${c.ok ? 'chip--ok' : 'chip--no'}">${escapeHtml(c.text)}</span>`).join('')}</span>` : ''}
+          const right = id === target.id;
+          const cells = right ? (mode.chips?.(g, target) ?? []).map(c => ({ ...c, ok: true, dir: null })) : (mode.chips?.(g, target) ?? []);
+          return `<li class="try${right ? ' try--win' : ''}${animateLast && i === 0 ? ' is-new' : ''}">
+            <span class="cell cell--name ${right ? 'cell--ok' : 'cell--no'}"><span class="try__n">${st.guesses.length - i}</span>${right ? escapeHtml(g.name ?? g.title) : `<s>${escapeHtml(g.name ?? g.title)}</s>`}</span>
+            ${cells.map((c, k) => `<span class="cell ${c.ok ? 'cell--ok' : 'cell--no'}" style="--d:${k + 1}" ${c.sr ? `title="${escapeHtml(c.sr)}"` : ''}>${escapeHtml(c.text)}${c.dir ? ICONS[c.dir] : ''}${c.sr ? `<span class="sr-only">, ${escapeHtml(c.sr)}</span>` : ''}</span>`).join('')}
           </li>`;
-        }).join('')
-      : `<li class="try try--empty">${escapeHtml(t('game.noGuesses'))}</li>`;
+        }).join('')}</ol>`;
+    }
     pips.innerHTML = Array.from({ length: mode.max }, (_, i) => {
       const g = st.guesses[i];
       const cls = g == null ? '' : g === target.id ? ' pip--win' : ' pip--miss';
@@ -200,7 +200,7 @@ export function mountGame(root, mode, { daily = true, level = 'medium' } = {}) {
       play('hint');
     }
     persist();
-    renderMeta(); renderBoard(!won); renderTries(!won); renderResult(true);
+    renderMeta(); renderBoard(!won); renderTries(true); renderResult(true);
     if (st.done) setTimeout(() => result.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' }), 250);
     else if (!won) {
       const field = root.querySelector('.guess');

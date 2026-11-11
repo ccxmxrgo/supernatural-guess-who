@@ -13,28 +13,26 @@ import { renderStats, renderHistory, renderAbout } from './views/pages.js';
 import { msToNextDay, formatCountdown } from './core/daily.js';
 import { t, getLang, setLang, applyStatic } from './lib/i18n.js';
 import * as sound from './lib/sound.js';
+import { ICONS } from './views/icons.js';
 
 const main = document.getElementById('top');
-const nav = document.querySelector('.nav');
 let cleanup = null;
 let current = null;
 
 function setCurrent(word) {
-  document.querySelectorAll('.nav__link[data-route]').forEach(a => {
+  document.querySelectorAll('[data-route]').forEach(a => {
     if (a.dataset.route === word) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
 }
 
-const HOME_ANCHORS = ['top', 'hero', 'daily', 'modes', 'files', 'record', 'contact'];
+const HOME_ANCHORS = ['top', 'modes', 'daily'];
 const PAGES = { stats: [renderStats, 'stats.h'], history: [renderHistory, 'hist.h'], rules: [renderAbout, 'rules.h'] };
 
 function route() {
   const name = location.hash.slice(1);
   if (!name || HOME_ANCHORS.includes(name)) {
     if (current !== 'home') render('home');
-    if (name && name !== 'top') document.getElementById(name)?.scrollIntoView();
-    else window.scrollTo(0, 0);
-    setCurrent(name === 'daily' ? 'daily' : name === 'modes' ? 'play' : '');
+    window.scrollTo(0, 0);
     return;
   }
   render(name);
@@ -71,18 +69,9 @@ function render(name) {
   if (play && matchMedia('(hover: hover)').matches) main.querySelector('.guess__input:not(:disabled)')?.focus({ preventScroll: true });
 }
 
-/* phone and tablet menu sheet */
-const toggle = nav.querySelector('.nav__toggle');
-function closeMenu() {
-  nav.classList.remove('is-open'); document.body.classList.remove('nav-locked');
-  toggle.setAttribute('aria-expanded', 'false');
-}
-toggle.addEventListener('click', () => {
-  const open = !nav.classList.contains('is-open');
-  nav.classList.toggle('is-open', open); document.body.classList.toggle('nav-locked', open);
-  toggle.setAttribute('aria-expanded', String(open));
-});
-nav.addEventListener('click', e => { if (e.target.closest('a') && nav.classList.contains('is-open')) closeMenu(); });
+/* header tools get their icons */
+document.querySelectorAll('[data-tool]').forEach(a => { a.insertAdjacentHTML('afterbegin', ICONS[a.dataset.tool]); });
+function closeMenu() {}
 
 /* sound switch */
 function paintSound() {
@@ -98,6 +87,7 @@ document.querySelectorAll('[data-sound]').forEach(btn => btn.addEventListener('c
 function paintLang() {
   applyStatic();
   paintSound();
+  document.querySelectorAll('[data-tool]').forEach(a => { a.title = a.textContent.trim(); });
   document.querySelectorAll('[data-lang]').forEach(b => { b.lang = getLang() === 'pt' ? 'en' : 'pt-BR'; b.title = t('lang.switch'); });
 }
 document.querySelectorAll('[data-lang]').forEach(btn => btn.addEventListener('click', () => {
