@@ -59,7 +59,10 @@ async function findPortrait(actor, title) {
   return candidates.length ? tryTitles(candidates) : null;
 }
 
-const strip = (html = '') => html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+const ENT = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
+const strip = (html = '') => html.replace(/<[^>]*>/g, '')
+  .replace(/&(#x?[0-9a-f]+|\w+);/gi, (m, k) => k[0] === '#' ? String.fromCodePoint(k[1].toLowerCase() === 'x' ? parseInt(k.slice(2), 16) : +k.slice(1)) : ENT[k] ?? m)
+  .replace(/\s+/g, ' ').trim();
 
 async function fileInfo(file) {
   const data = await api('commons.wikimedia.org', {

@@ -1,59 +1,72 @@
 # Supernatural Guess Who?
 
-A daily guessing game about the characters of Supernatural, in the spirit of LoLdle. Plain HTML, CSS and
-JavaScript modules: no build step, no server, no accounts. Host the folder anywhere static (GitHub Pages,
-Netlify, Cloudflare Pages).
+Um jogo diário de adivinhação com os personagens de Supernatural, no estilo do LoLdle, com cara de diário
+de caça do John Winchester. HTML, CSS e módulos JavaScript puros: sem build, sem servidor, sem contas. Roda
+em qualquer hospedagem estática (GitHub Pages, Netlify, Cloudflare Pages).
 
-## Run it
+O site abre em português; o botão **EN** no menu troca para inglês, e a escolha fica salva.
+
+## Rodar
 
 ```bash
-python3 -m http.server 8080      # then open http://localhost:8080
-npm test                         # data checks (needs Node 18+)
-node tests/play.test.cjs         # browser flow checks; serve on :8765 first, needs Playwright
+python3 -m http.server 8080      # depois abra http://localhost:8080
+npm test                         # checagem dos dados (Node 18+)
+node tests/play.test.cjs         # teste no navegador; sirva na porta 8765 antes, precisa do Playwright
 ```
 
-## Modes
+## Modos
 
-| Mode | File | How it plays |
+| Modo | Arquivo | Como funciona |
 |---|---|---|
-| Who Am I? | `js/modes/whoami.js` | Six clues, vague to obvious; each wrong guess opens the next |
-| Case File | `js/modes/description.js` | A written description; each wrong guess adds a line |
-| Quote Challenge | `js/modes/quote.js` | Name the speaker; wrong guesses add hints about them |
-| Episode Detective | `js/modes/episode.js` | Name the episode from case notes |
-| Who's That? | `js/modes/image.js` | A pixelated picture that sharpens; switches on once 6 characters have pictures |
+| Quem Sou Eu? | `js/modes/whoami.js` | Seis pistas, do vago ao óbvio; a última é a foto borrada |
+| Quem É Esse? | `js/modes/image.js` | Uma foto pixelada que fica mais nítida a cada erro |
+| Ficha do Caso | `js/modes/description.js` | Uma descrição escrita; cada erro acrescenta uma linha |
+| Quem Disse? | `js/modes/quote.js` | Diga quem falou a frase |
+| Detetive de Episódios | `js/modes/episode.js` | Diga o episódio pelas anotações do caso |
 
-Every mode has a daily puzzle (same for everyone, changes at 00:00 UTC) and endless random rounds
-(easy, medium, hard). Random rounds do not repeat an answer within a session until the pool is used up.
+Cada modo tem um caso diário (igual para todos, muda às 00:00 UTC, 21:00 em Brasília) e rodadas aleatórias
+(fácil, médio, difícil) que não repetem resposta na mesma sessão.
 
-## Adding things
+## Fotos
 
-- **A character:** append an entry to `js/data/characters.js` (the comment at the top lists the fields),
-  then run `npm test`; it checks for missing fields, duplicate names and clues that give the name away.
-- **A picture:** put a file in `assets/characters/` and list it in `js/data/images.js`. Use pictures you
-  have the right to use; the site ships with none.
-- **A quote or episode:** `js/data/quotes.js`, `js/data/episodes.js`.
-- **A mode:** a new file in `js/modes/` following the "mode object" note in `js/core/game.js`, added to
-  `js/modes/index.js`. The menu, routes, stats and daily challenge pick it up.
+As fotos são retratos dos atores com licença livre, do Wikimedia Commons. A Action
+**Fetch character photos** (aba Actions → Run workflow) roda `tools/fetch-photos.mjs`, que:
 
-## How it works
+1. procura o artigo do ator na Wikipédia (lista em `tools/actors.json`),
+2. pega a foto principal só se ela tiver licença livre (CC BY, CC BY-SA, CC0, domínio público),
+3. salva em `assets/characters/<id>.jpg`, escreve `js/data/images.js` e os créditos em
+   `assets/characters/CREDITS.md`, e faz o commit.
 
-- `js/core/game.js` runs every round: picking the answer, guesses, clues, win and loss, sharing.
-- `js/core/daily.js` picks the daily answer with a seeded shuffle of the pool, so every player gets the
-  same one without a server. Adding items to a pool changes future daily answers.
-- `js/core/stats.js` keeps stats and history in `localStorage`.
-- Routes are plain hash names (`#play-whoami`, `#play-quote-hard`, `#stats`).
+Para trocar uma foto, coloque `"file": "Nome do arquivo.jpg"` (do Commons) no personagem em
+`tools/actors.json` e rode a Action só com aquele id.
 
-There is no server, so the answer list ships to the browser like everything else; the daily answer is
-computed at run time and never written into the page, but a determined player could work it out.
-Hiding it fully needs a small API that checks guesses.
+## Adicionar coisas
 
-## Design
+- **Personagem:** `js/data/characters.js` (inglês) e `js/data/characters.pt.js` (português). `npm test`
+  confere campos, nomes repetidos e pistas que entregam o nome, nas duas línguas.
+- **Frase ou episódio:** `js/data/quotes.js` / `quotes.pt.js`, `js/data/episodes.js` / `episodes.pt.js`.
+- **Textos da interface:** `js/lib/i18n.js`.
+- **Modo novo:** um arquivo em `js/modes/` seguindo a nota "mode object" em `js/core/game.js`, listado em
+  `js/modes/index.js`.
 
-Designed with tasteskill (`vendor/taste`, MIT, github.com/Leonxlnx/taste-skill): its system, layout
-and motion files, with the palette and type in `css/app.css`. Photographs are licensed stand-ins from
-Wikimedia Commons, credited in the footer.
+## Como funciona
 
-## Legal
+- `js/core/game.js` roda cada rodada: resposta, chutes, pistas, vitória, derrota e compartilhamento.
+- `js/core/daily.js` escolhe a resposta do dia com um embaralhamento com semente, então todo mundo recebe a
+  mesma sem servidor.
+- `js/core/stats.js` guarda números e histórico no `localStorage`.
+- As rotas são nomes simples (`#play-whoami`, `#play-quote-hard`, `#stats`).
 
-Unofficial fan project, not affiliated with Warner Bros., The CW or Kripke Enterprises. Clues and
-descriptions are original text; quotes are short lines for trivia.
+Sem servidor, a lista de respostas vai para o navegador junto com o resto; a resposta do dia é calculada na
+hora e nunca escrita na página, mas alguém determinado conseguiria descobrir.
+
+## Visual
+
+Feito com as regras da skill Taste (tasteskill.dev): um só acento (vermelho de sangue seco), papel envelhecido
+com pauta e margem vermelha, letra à mão (Caveat) sobre texto datilografado (Courier Prime), fotos como
+retratos colados com fita, sem inclinação e sem filtro.
+
+## Aviso
+
+Projeto de fã, não oficial, sem ligação com Warner Bros., The CW ou Kripke Enterprises. Pistas e descrições
+são textos próprios; as frases são falas curtas para curiosidade.
