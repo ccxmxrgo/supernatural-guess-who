@@ -1,0 +1,1 @@
+{ "name": "spn-guess", "private": true, "type": "module", "scripts": { "test": "node tests/data.test.mjs", "start": "python3 -m http.server 8080" } }
