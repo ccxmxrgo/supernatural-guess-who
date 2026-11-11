@@ -105,6 +105,7 @@ const S = {
     'quote.note': 'A wrong guess opens a hint about the speaker.',
     'ep.case': 'The case', 'ep.season': 'Season', 'ep.seasonV': 'Season {s}.', 'ep.setting': 'Setting', 'ep.against': 'What you are up against', 'ep.happens': 'What happens', 'ep.giveaway': 'The giveaway',
     'photo.credit': 'Photo: {by}, {licence}',
+    'foot.actorCredits': 'actor photo credits', 'hero.photoAlt': 'An empty gravel road under a dark cliff at dusk', 'files.photos': 'Actor photographs',
     'title.home': 'Supernatural Guess Who?: a daily character guessing game for fans',
   },
   pt: {
@@ -195,6 +196,7 @@ const S = {
     'quote.note': 'Cada erro abre uma dica sobre quem falou.',
     'ep.case': 'O caso', 'ep.season': 'Temporada', 'ep.seasonV': 'Temporada {s}.', 'ep.setting': 'Lugar', 'ep.against': 'Contra o quê', 'ep.happens': 'O que acontece', 'ep.giveaway': 'A entregada',
     'photo.credit': 'Foto: {by}, {licence}',
+    'foot.actorCredits': 'créditos das fotos dos atores', 'hero.photoAlt': 'Uma estrada de cascalho vazia sob um penhasco escuro ao entardecer', 'files.photos': 'Fotos dos atores',
     'title.home': 'Supernatural Guess Who?: um jogo diário de adivinhação para fãs',
   },
 };

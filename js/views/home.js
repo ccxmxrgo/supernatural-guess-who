@@ -1,149 +1,164 @@
-/** The home page: hero, today's challenges, the modes, the files, the player's record. */
+/** The home page, laid out as pages of the hunting journal: the cover, today's cases, the modes, the files, the record. */
 import { CHARACTERS } from '../data/characters.js';
 import { EPISODES } from '../data/episodes.js';
 import { QUOTES } from '../data/quotes.js';
-import { MODES, isAvailable } from '../modes/index.js';
+import { IMAGES } from '../data/images.js';
+import { hints, description, quoteText, clues } from '../data/loc.js';
+import { MODES, isAvailable, modeName, modeBlurb } from '../modes/index.js';
 import { dailyState } from '../core/game.js';
 import { dayNumber, msToNextDay, formatCountdown } from '../core/daily.js';
 import { getStats, winRate, avgGuesses, liveDailyStreak } from '../core/stats.js';
 import { escapeHtml } from '../lib/text.js';
+import { t } from '../lib/i18n.js';
+import { tally } from './tally.js';
 
-const arrow = '<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg>';
+const e = escapeHtml;
+const byId = id => CHARACTERS.find(c => c.id === id) ?? EPISODES.find(x => x.id === id);
 
-/* small live pictures of each mode, drawn in HTML so they read as the real game */
-const previews = {
-  whoami: `<ol class="mini mini--clues" aria-hidden="true">
-      <li><span>1</span>A soldier who was built to follow orders.</li>
-      <li><span>2</span>Their name starts with <b>C</b></li>
-      <li class="is-locked"><span>3</span>Opens after wrong guess 2</li></ol>`,
-  description: `<div class="mini mini--file" aria-hidden="true"><p>Gruff, sharp and secretly sentimental.</p><p>Works out of a house full of books in South Dakota.</p><i></i><i></i></div>`,
-  quote: `<div class="mini mini--quote" aria-hidden="true"><p>“Hello, boys.”</p><span class="chip chip--no">Angel</span><span class="chip chip--ok">Demon</span></div>`,
-  episode: `<div class="mini mini--ep" aria-hidden="true"><p>A man is caught in a time loop at a roadside attraction.</p><span class="chip chip--no">Season 2, it airs later</span><span class="chip chip--ok">Season 3</span></div>`,
-  image: `<div class="mini mini--pix" aria-hidden="true">${Array.from({ length: 48 }, (_, i) => `<i style="--v:${((Math.sin(i * 12.9898 + 4.1) * 43758.5453) % 1 + 1) % 1}"></i>`).join('')}</div>`,
-};
+/* small live pictures of each mode, built from the real data so they follow the language */
+function preview(id) {
+  if (id === 'whoami') {
+    return `<ol class="mini mini--clues" aria-hidden="true">
+      <li><span>1</span>${e(hints(byId('castiel')).vague)}</li>
+      <li><span>2</span><p>${e(t('clue.startsWith'))} <b>C</b></p></li>
+      <li class="is-locked"><span>3</span><i></i></li></ol>`;
+  }
+  if (id === 'description') return `<div class="mini mini--file" aria-hidden="true"><p>${e(description(byId('bobby-singer'))[0])}</p><i></i><i></i></div>`;
+  if (id === 'quote') {
+    const q = QUOTES.find(x => x.id === 'q-hello-boys');
+    return `<div class="mini mini--quote" aria-hidden="true"><p>“${e(quoteText(q))}”</p><s>Castiel</s></div>`;
+  }
+  if (id === 'episode') return `<div class="mini mini--ep" aria-hidden="true"><p>${e(clues(byId('e-mystery-spot'))[0])}</p><s>Pilot</s></div>`;
+  if (id === 'image') return `<div class="mini mini--pix" aria-hidden="true">${Array.from({ length: 48 }, (_, i) => `<i style="--v:${((Math.sin(i * 12.9898 + 4.1) * 43758.5453) % 1 + 1) % 1}"></i>`).join('')}</div>`;
+  return '';
+}
 
 function statusOf(mode, day) {
-  if (!isAvailable(mode)) return { text: 'Opens once character pictures are added', cls: 'is-off' };
+  if (!isAvailable(mode)) return { text: t('daily.noPhotos'), cls: 'is-off' };
   const s = dailyState(mode, day);
-  if (!s.done) return s.guesses.length ? { text: `In progress, ${s.guesses.length} of ${mode.max} guesses used`, cls: '' } : { text: 'Not played yet', cls: '' };
-  return s.won ? { text: `Solved in ${s.guesses.length} of ${mode.max}`, cls: 'is-win' } : { text: 'Missed today', cls: 'is-miss' };
+  if (!s.done) return { text: s.guesses.length ? t('daily.progress', { n: s.guesses.length, max: mode.max }) : t('daily.notPlayed'), cls: '' };
+  return s.won ? { text: t('daily.won', { n: s.guesses.length, max: mode.max }), cls: 'is-win' } : { text: t('daily.lost'), cls: 'is-miss' };
 }
 
 export function renderHome(root) {
   const day = dayNumber();
   const stats = getStats();
   const streak = liveDailyStreak(stats, day);
+  const count = tag => CHARACTERS.filter(c => c.tags.includes(tag)).length;
   const groups = [
-    ['Hunters and humans', CHARACTERS.filter(c => c.tags.includes('human')).length],
-    ['Angels and archangels', CHARACTERS.filter(c => c.tags.includes('angel')).length],
-    ['Demons', CHARACTERS.filter(c => c.tags.includes('demon')).length],
-    ['Gods, horsemen and primordials', CHARACTERS.filter(c => c.tags.includes('god')).length],
-    ['Monsters', CHARACTERS.filter(c => c.tags.includes('monster') && !c.tags.includes('human')).length],
+    [t('files.humans'), count('human')],
+    [t('files.angels'), count('angel')],
+    [t('files.demons'), count('demon')],
+    [t('files.gods'), count('god')],
+    [t('files.monsters'), CHARACTERS.filter(c => c.tags.includes('monster') && !c.tags.includes('human')).length],
   ];
   const playable = MODES.filter(isAvailable);
+  const photos = Object.keys(IMAGES).length;
+  const countdown = formatCountdown(msToNextDay());
 
   root.innerHTML = `
-  <section class="hero hero--photo" id="hero" data-enter data-box="none" data-tone="dark" data-calm="left" aria-labelledby="hero-h">
-    <img class="hero__bg photo-grade" src="assets/photos/m108358720-2400.webp" srcset="assets/photos/m108358720-1200.webp 1200w, assets/photos/m108358720-2400.webp 2400w" sizes="100vw" alt="An empty gravel road under a dark cliff at dusk" style="--ly-pos: 60% 50%; --ly-pos-phone: 72% 50%" fetchpriority="high">
-    <div class="wrap"><div class="hero-text">
+  <section class="hero" id="hero" aria-labelledby="hero-h">
+    <div class="wrap hero__grid">
       <div class="hero__text">
-        <h1 id="hero-h">Supernatural Guess Who?</h1>
-        <p class="hero__lead">A daily guessing game about the characters of Supernatural. One new character for every player at midnight UTC, six guesses, and a sharper clue after every miss.</p>
-        <div class="btn-row"><a class="btn btn--primary" href="#play-whoami">Start today's challenge${arrow}</a><a class="btn btn--secondary" href="#modes">See the game modes</a></div>
-      </div>
-      <dl class="hero__facts">
-        <div><dt>Today</dt><dd>Day ${day}</dd></div>
-        <div><dt>Next character in</dt><dd data-countdown>${formatCountdown(msToNextDay())}</dd></div>
-        <div><dt>In the files</dt><dd>${CHARACTERS.length} characters, ${EPISODES.length} episodes</dd></div>
-        <div><dt>Your daily streak</dt><dd>${streak} ${streak === 1 ? 'day' : 'days'}</dd></div>
-      </dl>
-    </div></div>
-  </section>
-
-  <section id="daily" aria-labelledby="daily-h">
-    <div class="wrap grid grid--middle">
-      <div class="span-6">
-        <div class="section-head">
-          <h2 id="daily-h">Today's challenges. <span class="muted">Day ${day}, the same answers for every player.</span></h2>
+        <p class="kicker">${e(t('hero.kicker', { day }))}</p>
+        <h1 id="hero-h" class="hero__h">Supernatural <span>Guess Who?</span></h1>
+        <p class="lead">${e(t('hero.lead'))}</p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="#play-whoami">${e(t('cta.today'))}</a>
+          <a class="btn btn--secondary" href="#modes">${e(t('hero.modes'))}</a>
         </div>
-        <ul class="rows daily-rows">
-          ${MODES.map(m => { const s = statusOf(m, day); return `
-          <li class="${s.cls}">
-            <span class="rows__name">${escapeHtml(m.name)}</span>
-            <span class="rows__value">${isAvailable(m) ? `<a class="link" href="#play-${m.id}">${dailyState(m, day).done ? 'See result' : 'Play'}<span class="sr-only"> ${escapeHtml(m.name)}</span></a>` : ''}</span>
-            <p>${escapeHtml(s.text)}</p>
-          </li>`; }).join('')}
-        </ul>
-        <p class="daily-next">New challenges in <strong data-countdown>${formatCountdown(msToNextDay())}</strong></p>
       </div>
-      <div class="span-5 start-8">
-        <div class="photo-frame"><img class="photo-grade" src="assets/photos/m19113729-1200.webp" alt="A smith hammering a glowing iron bar on an anvil" loading="lazy"></div>
+      <div class="hero__side">
+        <figure class="print print--wide">
+          <img src="assets/photos/m108358720-1200.webp" alt="${e(t('hero.photoAlt'))}" width="1200" height="658" fetchpriority="high">
+        </figure>
+        <dl class="facts">
+          <div><dt>${e(t('fact.next'))}</dt><dd data-countdown>${countdown}</dd></div>
+          <div><dt>${e(t('fact.files'))}</dt><dd>${e(t('fact.filesV', { c: CHARACTERS.length, e: EPISODES.length }))}</dd></div>
+          <div><dt>${e(t('fact.streak'))}</dt><dd>${e(t(streak === 1 ? 'day' : 'days', { n: streak }))}</dd></div>
+        </dl>
       </div>
     </div>
   </section>
 
-  <section id="modes" aria-labelledby="modes-h">
+  <section class="sheet" id="daily" aria-labelledby="daily-h">
     <div class="wrap">
-      <div class="section-head">
-        <h2 id="modes-h">Five game modes. <span class="muted">Each has a daily puzzle and endless random rounds.</span></h2>
-      </div>
-      <div class="grid mode-grid">
+      <header class="sheet__head">
+        <h2 id="daily-h">${e(t('daily.h'))}</h2>
+        <p class="muted">${e(t('daily.sub', { day }))}</p>
+      </header>
+      <ul class="checklist">
+        ${MODES.map(m => { const s = statusOf(m, day); const on = isAvailable(m); return `
+        <li class="${s.cls}">
+          <span class="checklist__box" aria-hidden="true"></span>
+          <span class="checklist__name">${e(modeName(m))}</span>
+          <span class="checklist__state">${e(s.text)}</span>
+          ${on ? `<a class="link checklist__go" href="#play-${m.id}">${e(t(dailyState(m, day).done ? 'daily.result' : 'daily.play'))}<span class="sr-only"> ${e(modeName(m))}</span></a>` : '<span></span>'}
+        </li>`; }).join('')}
+      </ul>
+      <p class="sheet__foot">${e(t('daily.next'))} <strong data-countdown>${countdown}</strong></p>
+    </div>
+  </section>
+
+  <section class="sheet" id="modes" aria-labelledby="modes-h">
+    <div class="wrap">
+      <header class="sheet__head">
+        <h2 id="modes-h">${e(t('modes.h'))}</h2>
+        <p class="muted">${e(t('modes.sub'))}</p>
+      </header>
+      <div class="cards">
         ${MODES.map(m => {
           const on = isAvailable(m);
-          return `<${on ? 'a' : 'div'} class="card mode-card span-4${on ? '' : ' is-off'}" ${on ? `href="#play-${m.id}"` : ''}>
-            <div class="mode-card__panel">${previews[m.id] ?? ''}</div>
-            <h3 class="mode-card__title">${escapeHtml(m.name)}</h3>
-            <p class="mode-card__text">${escapeHtml(m.blurb)}</p>
-            <p class="mode-card__meta">${on ? `${m.max} guesses` : 'Opens once character pictures are added'}</p>
-          </${on ? 'a' : 'div'}>`;
+          const tag = on ? 'a' : 'div';
+          return `<${tag} class="card${on ? '' : ' is-off'}" ${on ? `href="#play-${m.id}"` : ''}>
+            <div class="card__panel">${preview(m.id)}</div>
+            <h3 class="card__title">${e(modeName(m))}</h3>
+            <p class="card__text">${e(modeBlurb(m))}</p>
+            <p class="card__meta">${e(on ? t('modes.guesses', { n: m.max }) : t('daily.noPhotos'))}</p>
+          </${tag}>`;
         }).join('')}
-        <a class="card mode-card mode-card--random span-4" href="#play-${playable[Math.floor(Math.random() * playable.length)].id}-medium">
-          <div class="mode-card__panel"><div class="mini mini--dice" aria-hidden="true"><span>?</span></div></div>
-          <h3 class="mode-card__title">Random round</h3>
-          <p class="mode-card__text">Drops you into a random mode with a fresh answer. Answers do not repeat until you have seen the whole pool.</p>
-          <p class="mode-card__meta">Easy, medium or hard</p>
+        <a class="card card--random" href="#play-${playable[Math.floor(Math.random() * playable.length)].id}-medium">
+          <div class="card__panel"><div class="mini mini--dice" aria-hidden="true"><span>?</span></div></div>
+          <h3 class="card__title">${e(t('random.title'))}</h3>
+          <p class="card__text">${e(t('random.text'))}</p>
+          <p class="card__meta">${e(t('random.meta'))}</p>
         </a>
       </div>
     </div>
   </section>
 
-  <section id="files" aria-labelledby="files-h">
-    <div class="wrap grid grid--middle">
-      <div class="span-5">
-        <div class="photo-frame photo-frame--tall"><img class="photo-grade" src="assets/photos/m162973523-1200.webp" alt="Hands gilding the spine of a leather-bound book" loading="lazy"></div>
+  <section class="sheet" id="files" aria-labelledby="files-h">
+    <div class="wrap split">
+      <div>
+        <header class="sheet__head">
+          <h2 id="files-h">${e(t('files.h'))}</h2>
+          <p class="muted">${e(t('files.sub', { n: CHARACTERS.length }))}</p>
+        </header>
+        <p class="lead">${e(t('files.lead'))}</p>
       </div>
-      <div class="span-6 start-7">
-        <div class="section-head">
-          <h2 id="files-h">The character files. <span class="muted">${CHARACTERS.length} characters across 15 seasons.</span></h2>
-          <p class="t-lead measure">From the brothers to one-episode deep cuts. Every clue is written for this game, ranked from easy to hard.</p>
-        </div>
-        <ul class="rows">
-          ${groups.map(([n, v]) => `<li><span class="rows__name">${n}</span><span class="rows__value">${v}</span></li>`).join('')}
-          <li><span class="rows__name">Episodes and quotes</span><span class="rows__value">${EPISODES.length} and ${QUOTES.length}</span></li>
-        </ul>
-      </div>
+      <ul class="index">
+        ${groups.map(([n, v]) => `<li><span class="index__name">${e(n)}</span><span class="index__tally">${tally(v)}</span><span class="index__n">${v}</span></li>`).join('')}
+        <li><span class="index__name">${e(t('files.eq'))}</span><span class="index__tally"></span><span class="index__n">${e(t('files.eqV', { e: EPISODES.length, q: QUOTES.length }))}</span></li>
+        <li><span class="index__name">${e(t('files.photos'))}</span><span class="index__tally"></span><span class="index__n">${photos}</span></li>
+      </ul>
     </div>
   </section>
 
-  <section id="record" aria-labelledby="record-h">
-    <div class="wrap grid grid--middle">
-      <div class="span-6">
-        <div class="section-head">
-          <h2 id="record-h">Your record. <span class="muted">Kept in this browser, no account needed.</span></h2>
-        </div>
-        <dl class="statgrid">
-          <div><dt>Games played</dt><dd>${stats.all.played}</dd></div>
-          <div><dt>Win rate</dt><dd>${winRate(stats.all)}%</dd></div>
-          <div><dt>Winning streak</dt><dd>${stats.all.streak}</dd></div>
-          <div><dt>Longest streak</dt><dd>${stats.all.best}</dd></div>
-          <div><dt>Average guesses</dt><dd>${avgGuesses(stats.all)}</dd></div>
-          <div><dt>Dailies completed</dt><dd>${stats.daily.completed}</dd></div>
-        </dl>
-        <div class="btn-row record-actions"><a class="link" href="#stats">See stats by mode</a><a class="link" href="#history">See your game history</a></div>
-      </div>
-      <div class="span-5 start-8">
-        <div class="photo-frame"><img class="photo-grade" src="assets/photos/m130857602-1200.webp" alt="A heavy anvil wrapped in chain in an old forge" loading="lazy"></div>
-      </div>
+  <section class="sheet" id="record" aria-labelledby="record-h">
+    <div class="wrap">
+      <header class="sheet__head">
+        <h2 id="record-h">${e(t('record.h'))}</h2>
+        <p class="muted">${e(t('record.sub'))}</p>
+      </header>
+      <dl class="statgrid">
+        <div><dt>${e(t('stat.played'))}</dt><dd>${stats.all.played}</dd><span class="statgrid__tally">${tally(stats.all.played)}</span></div>
+        <div><dt>${e(t('stat.rate'))}</dt><dd>${winRate(stats.all)}%</dd></div>
+        <div><dt>${e(t('stat.streak'))}</dt><dd>${stats.all.streak}</dd><span class="statgrid__tally">${tally(stats.all.streak)}</span></div>
+        <div><dt>${e(t('stat.best'))}</dt><dd>${stats.all.best}</dd></div>
+        <div><dt>${e(t('stat.avg'))}</dt><dd>${avgGuesses(stats.all)}</dd></div>
+        <div><dt>${e(t('stat.dailies'))}</dt><dd>${stats.daily.completed}</dd></div>
+      </dl>
+      <div class="btn-row"><a class="link" href="#stats">${e(t('record.byMode'))}</a><a class="link" href="#history">${e(t('record.history'))}</a></div>
     </div>
   </section>`;
 }

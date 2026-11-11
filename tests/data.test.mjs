@@ -4,6 +4,9 @@ import { EPISODES } from '../js/data/episodes.js';
 import { QUOTES } from '../js/data/quotes.js';
 import { normalize } from '../js/lib/text.js';
 import { dailyItem } from '../js/core/daily.js';
+import { CHARACTERS_PT, SPECIES_PT } from '../js/data/characters.pt.js';
+import { EPISODES_PT } from '../js/data/episodes.pt.js';
+import { QUOTES_PT } from '../js/data/quotes.pt.js';
 
 let fail = 0;
 const bad = m => { fail++; console.error('FAIL', m); };
@@ -25,6 +28,20 @@ for (const c of CHARACTERS) {
   const text = [c.hints.vague, c.hints.relation, c.hints.history, ...c.description].join(' ').toLowerCase();
   for (const n of own) if (new RegExp(`\\b${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`).test(text)) bad(`${c.id} clue mentions "${n}"`);
 }
+// Portuguese: every entry translated, same shape, and no names given away either
+const esc = n => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+for (const c of CHARACTERS) {
+  const pt = CHARACTERS_PT[c.id];
+  if (!pt) { bad(`${c.id} has no Portuguese text`); continue; }
+  for (const k of ['vague', 'relation', 'history', 'look']) if (!pt.hints?.[k]) bad(`${c.id} PT missing hint ${k}`);
+  if (pt.description?.length !== c.description.length) bad(`${c.id} PT description length`);
+  if (!SPECIES_PT[c.species]) bad(`species "${c.species}" has no Portuguese name`);
+  const own = [c.name, c.name.split(' ')[0], ...c.aliases].filter(n => n.length > 3).map(n => n.toLowerCase());
+  const text = [pt.hints.vague, pt.hints.relation, pt.hints.history, ...(pt.description ?? [])].join(' ').toLowerCase();
+  for (const n of own) if (new RegExp(`(^|[^\\p{L}])${esc(n)}($|[^\\p{L}])`, 'u').test(text)) bad(`${c.id} PT clue mentions "${n}"`);
+}
+for (const e of EPISODES) if (EPISODES_PT[e.id]?.length !== 5) bad(`${e.id} needs 5 PT clues`);
+for (const q of QUOTES) if (!QUOTES_PT[q.id]?.text || !QUOTES_PT[q.id]?.context) bad(`quote ${q.id} PT missing`);
 for (const q of QUOTES) if (!ids.has(q.by)) bad(`quote ${q.id} speaker ${q.by} unknown`);
 const eids = new Set();
 for (const e of EPISODES) {

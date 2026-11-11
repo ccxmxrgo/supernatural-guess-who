@@ -26,8 +26,11 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 async function api(host, params) {
   const url = `https://${host}/w/api.php?` + new URLSearchParams({ format: 'json', formatversion: '2', origin: '*', ...params });
   for (let attempt = 0; attempt < 4; attempt++) {
-    const res = await fetch(url, { headers: { 'User-Agent': UA } });
+    let res;
+    try { res = await fetch(url, { headers: { 'User-Agent': UA, 'Api-User-Agent': UA }, signal: AbortSignal.timeout(20000) }); }
+    catch (err) { console.log(`  retry after ${err.name}: ${host}`); await sleep(1500 * 2 ** attempt); continue; }
     if (res.ok) return res.json();
+    console.log(`  ${res.status} from ${host}`);
     if (res.status === 429 || res.status >= 500) { await sleep(1500 * 2 ** attempt); continue; }
     throw new Error(`${res.status} ${url}`);
   }
@@ -92,13 +95,14 @@ async function main() {
   const missed = [];
   for (const id of ids) {
     const { actor, title, file: pinned } = actors[id];
+    console.log(`..  ${id} (${actor})`);
     try {
       const hit = pinned ? { title: actor, file: pinned } : await findPortrait(actor, title);
       if (!hit) { missed.push(`${id} (${actor}): no free portrait`); continue; }
       const info = await fileInfo(hit.file);
       if (!info) { missed.push(`${id}: no file info for ${hit.file}`); continue; }
       if (!FREE.test(info.licence)) { missed.push(`${id}: licence "${info.licence}" not accepted`); continue; }
-      const res = await fetch(info.thumb, { headers: { 'User-Agent': UA } });
+      const res = await fetch(info.thumb, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(30000) });
       if (!res.ok) { missed.push(`${id}: download ${res.status}`); continue; }
       const ext = /\.png($|\?)/i.test(info.thumb) ? 'png' : 'jpg';
       const src = `assets/characters/${id}.${ext}`;

@@ -27,7 +27,7 @@ const ok = (c, m) => { if (!c) { fail++; console.error('FAIL', m); } else consol
   ok(await p.locator('.clue:not(.clue--locked)').count() === 2, 'a wrong guess opens clue 2');
   ok(await p.locator('.try').count() === 1, 'the wrong guess is listed');
   await p.fill('.guess__input', 'xyzzy'); await p.keyboard.press('Enter');
-  ok((await p.textContent('.guess__error')).includes('not in the files'), 'unknown names are refused');
+  ok((await p.textContent('.guess__error')).includes('não está no diário'), 'unknown names are refused');
   await p.fill('.guess__input', ans); await p.keyboard.press('Enter');
   ok(await p.locator('.result--win').isVisible(), `solving with "${ans}" wins`);
   ok(await p.locator('.guess__input').isDisabled(), 'the field locks after the round');
@@ -57,16 +57,35 @@ const ok = (c, m) => { if (!c) { fail++; console.error('FAIL', m); } else consol
     await p.goto(BASE + `#play-${m}${lv}`);
     ok(await p.locator('.board').innerHTML().then(h => h.length > 40), `${m}${lv || ' daily'} renders a board`);
   }
+  const photos = await p.evaluate(async () => Object.keys((await import('./js/data/images.js')).IMAGES).length);
   await p.goto(BASE + '#play-image'); await p.waitForTimeout(300);
-  ok(p.url().endsWith('#top'), 'image mode without pictures sends you home');
+  if (photos >= 6) ok(await p.locator('.snap--pixel canvas').count() === 1, `image mode draws a pixelated photo (${photos} photos)`);
+  else ok(p.url().endsWith('#modes'), 'image mode without pictures sends you to the modes');
 
   // stats and history
   await p.goto(BASE + '#stats');
   ok((await p.textContent('.statgrid')).includes('50%'), 'stats show a 50% win rate after one win, one loss');
   await p.goto(BASE + '#history');
-  ok(await p.locator('.history li').count() === 2, 'history lists both rounds');
+  ok(await p.locator('.log li').count() === 2, 'history lists both rounds');
   await p.goto(BASE + '#top');
-  ok((await p.textContent('#daily')).includes('Solved in 2 of 6'), 'home shows today\'s solved daily');
+  ok((await p.textContent('#daily')).includes('Resolvido em 2 de 6'), 'home shows today\'s solved daily');
+
+  // language switch: Portuguese by default, English on request, remembered
+  ok((await p.textContent('#daily-h')).includes('Casos de hoje'), 'the site starts in Portuguese');
+  await p.click('.nav__tool[data-lang]');
+  ok((await p.textContent('#daily-h')).includes("Today's cases"), 'the switch turns it to English');
+  await p.reload();
+  ok((await p.getAttribute('html', 'lang')) === 'en', 'the language choice is remembered');
+  await p.goto(BASE + '#play-whoami');
+  ok((await p.textContent('.game h1')) === 'Who Am I?', 'mode names follow the language');
+  await p.goto(BASE + '#top'); await p.click('.nav__tool[data-lang]');
+
+  // phone layout: no sideways scroll
+  await p.setViewportSize({ width: 375, height: 800 });
+  for (const h of ['#top', '#play-whoami', '#stats']) {
+    await p.goto(BASE + h); await p.waitForTimeout(150);
+    ok(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `no sideways scroll on a phone at ${h}`);
+  }
 
   ok(errors.length === 0, 'no console errors' + (errors.length ? ': ' + errors.join(' | ') : ''));
   await b.close();

@@ -1,111 +1,82 @@
 <!doctype html>
-<!-- Design: tasteskill 2.5 (design-taste-frontend), kind gaming. Deal: hero photo (no art files: the setting under the
-     game's name), nav nav-centre, close close-word, footer footer-dark (dealt footer-statement puts a light ground
-     under a dark brief, so the next in the list), rhythm space, buttons block, mark wordmark. Palette: the brief's own
-     colours (warm black, burgundy, gold) through the warm-black-gold game palette. Type: EB Garamond over Jost. -->
-<html lang="en" data-type="software" data-radius="soft" data-buttons="block" data-tone="dark" data-motion>
+<!-- Design: John Winchester's hunting journal. Aged paper, ruled lines and a red margin; sepia ink with one
+     accent, dried-blood red. Caveat (handwriting) over Courier Prime (typewriter). Photographs are taped prints:
+     no tilt, no grading. Taste rules (tasteskill.dev): one accent, the hero names the game, plain copy, buttons
+     are a verb plus an object, credits on one footer line. -->
+<html lang="pt-BR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Supernatural Guess Who?: a daily character guessing game for fans</title>
-<meta name="description" content="Guess a Supernatural character from six clues. A new puzzle every day for everyone, plus quotes, episodes and case files.">
+<title>Supernatural Guess Who?</title>
+<meta name="description" content="Adivinhe um personagem de Supernatural com seis pistas. Um caso novo por dia, igual para todo mundo, além de frases, episódios e fotos.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Supernatural Guess Who?: a daily character guessing game for fans">
-<meta property="og:description" content="Six clues, six guesses, one new Supernatural character every day.">
-<meta property="og:image" content="share.jpg">
-<meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="Supernatural Guess Who?">
+<meta property="og:description" content="Seis pistas, seis chutes, um personagem de Supernatural novo por dia.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#0c0a08">
-<meta name="site-kind" content="gaming">
-<meta name="page-type" content="software">
+<meta name="theme-color" content="#efe5cf">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600&family=Jost:wght@400;500&display=swap">
-<link rel="stylesheet" href="vendor/taste/system.css">
-<link rel="stylesheet" href="vendor/taste/motion.css">
-<link rel="stylesheet" href="vendor/taste/layout.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap">
 <link rel="stylesheet" href="css/app.css">
-<script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
 </head>
 <body>
-<div class="veil" aria-hidden="true"><svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="32" cy="32" r="22"/><circle cx="32" cy="32" r="16.5" stroke-width="1"/><path d="M32 13.5 42.9 47 14.4 26.3h35.2L21.1 47z" stroke-linejoin="round"/></g></svg></div>
+<a class="skip-link" href="#top" data-i18n="nav.skip">Pular para o conteúdo</a>
 
-<header class="nav nav--centre">
+<header class="nav">
   <div class="wrap nav__bar">
-    <a class="skip-link" href="#top">Skip to content</a>
     <a class="nav__logo" href="#top">Guess Who?</a>
     <nav class="nav__links" aria-label="Main">
-      <div class="nav__item">
-        <a class="nav__link" href="#modes" data-route="play">Modes <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <div class="nav__menu">
-          <div class="wrap grid">
-            <div class="span-3 menu-col"><p class="t-label">Daily challenges</p>
-              <a href="#play-whoami">Who Am I?<span>Six clues, from vague to obvious</span></a>
-              <a href="#play-description">Case File<span>Name them from a written description</span></a>
-            </div>
-            <div class="span-3 menu-col"><p class="t-label">More modes</p>
-              <a href="#play-quote">Quote Challenge<span>Who said it?</span></a>
-              <a href="#play-episode">Episode Detective<span>Name the episode from case notes</span></a>
-            </div>
-            <div class="span-3 menu-col"><p class="t-label">Random rounds</p>
-              <a href="#play-whoami-easy">Easy files<span>The household names</span></a>
-              <a href="#play-whoami-hard">Hard files<span>Deep cuts for long-time fans</span></a>
-            </div>
-          </div>
-        </div>
-        <button class="nav__expand" type="button" aria-label="Show the modes"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      </div>
-      <div class="nav__item"><a class="nav__link" href="#daily">Daily</a></div>
-      <div class="nav__item"><a class="nav__link" href="#stats" data-route="stats">Stats</a></div>
-      <div class="nav__item"><a class="nav__link" href="#history" data-route="history">History</a></div>
-      <div class="nav__item"><a class="nav__link" href="#rules" data-route="about">Rules</a></div>
+      <a class="nav__link" href="#daily" data-route="daily" data-i18n="nav.daily">Hoje</a>
+      <a class="nav__link" href="#modes" data-route="play" data-i18n="nav.modes">Modos</a>
+      <a class="nav__link" href="#stats" data-route="stats" data-i18n="nav.stats">Números</a>
+      <a class="nav__link" href="#history" data-route="history" data-i18n="nav.history">Histórico</a>
+      <a class="nav__link" href="#rules" data-route="rules" data-i18n="nav.rules">Regras</a>
     </nav>
     <div class="nav__actions">
-      <button class="nav__link sound-btn" type="button" data-sound aria-pressed="false"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8h3l4-3v10l-4-3H3z" fill="currentColor"/><path class="sound-wave" d="M13 7.5a3.5 3.5 0 0 1 0 5M15 5.5a6.3 6.3 0 0 1 0 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span data-sound-label>Sound off</span></button>
-      <a class="btn btn--primary" href="#play-whoami">Start today's challenge</a>
+      <button class="nav__tool" type="button" data-lang><span class="nav__tool-k" data-i18n="lang.short">EN</span><span class="sr-only" data-i18n="lang.switch">Read in English</span></button>
+      <button class="nav__tool" type="button" data-sound aria-pressed="false"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8h3l4-3v10l-4-3H3z" fill="currentColor"/><path class="sound-wave" d="M13 7.5a3.5 3.5 0 0 1 0 5M15 5.5a6.3 6.3 0 0 1 0 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span class="sr-only" data-sound-label>Som desligado</span></button>
+      <a class="btn btn--primary nav__cta" href="#play-whoami" data-i18n="cta.today">Abrir o caso de hoje</a>
     </div>
-    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 9h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    <button class="nav__toggle" type="button" aria-expanded="false" data-i18n-label="nav.menu" aria-label="Menu"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
   </div>
 </header>
 
 <main id="top"></main>
 
-<footer class="footer closing footer--dark ground-inverse" id="contact" aria-labelledby="close-h">
+<footer class="footer" id="contact">
   <div class="wrap">
-    <div class="closing__cta close--word">
-      <div class="section-head--split">
-        <div><h2 id="close-h">Today's character is waiting</h2><p class="t-lead">Six guesses. Same answer for everyone until midnight UTC.</p></div>
-        <a class="btn btn--primary" href="#play-whoami">Start today's challenge<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+    <div class="footer__close">
+      <div>
+        <h2 class="footer__h" data-i18n="close.h">O personagem de hoje está esperando</h2>
+        <p class="footer__lead" data-i18n="close.lead">Seis chutes. A mesma resposta para todo mundo até meia-noite UTC.</p>
       </div>
-      <p class="close__word" aria-hidden="true">Guess Who?</p>
+      <a class="btn btn--primary" href="#play-whoami" data-i18n="cta.today">Abrir o caso de hoje</a>
     </div>
-    <div class="closing__links">
-      <div class="grid">
-        <div class="span-4 stack-4">
-          <a class="nav__logo" href="#top">Guess Who?</a>
-          <p class="footer__lede">A daily guessing game for Supernatural fans.</p>
-        </div>
-        <div class="span-2 footer__col"><h3>Play</h3><ul><li><a href="#play-whoami">Who Am I?</a></li><li><a href="#play-description">Case File</a></li><li><a href="#play-quote">Quotes</a></li><li><a href="#play-episode">Episodes</a></li></ul></div>
-        <div class="span-2 footer__col"><h3>You</h3><ul><li><a href="#stats">Stats</a></li><li><a href="#history">History</a></li></ul></div>
-        <div class="span-2 footer__col"><h3>Game</h3><ul><li><a href="#rules">Rules</a></li><li><button class="footer__btn" type="button" data-sound aria-pressed="false"><span data-sound-label>Sound off</span></button></li></ul></div>
+    <div class="footer__cols">
+      <div class="footer__brand">
+        <a class="nav__logo" href="#top">Guess Who?</a>
+        <p data-i18n="site.tagline">Um jogo diário de adivinhação para fãs de Supernatural.</p>
       </div>
-      <p class="footer__legal-note">Unofficial fan game. Not affiliated with or endorsed by Warner Bros., The CW or Kripke Enterprises. Supernatural and its characters belong to their owners.</p>
-      <div class="footer__legal">
-        <span>&copy; <span id="year">2026</span> Supernatural Guess Who?</span>
-        <details class="credits"><summary>Photographs via Wikimedia Commons</summary>
-          <ul>
-            <li><a href="https://commons.wikimedia.org/wiki/File:624_Road,_Westfjords,_Iceland_(48802800941).jpg">Road in the Westfjords</a>, Barry Marsh, Public Domain Mark 1.0, adapted</li>
-            <li><a href="https://commons.wikimedia.org/wiki/File:Vintage_smith%27s_workshop_-_0180.jpg">Vintage smith's workshop</a>, Jorge Royan, CC BY-SA 3.0, adapted</li>
-            <li><a href="https://commons.wikimedia.org/wiki/File:Buchbinder_beim_Handvergolden_mit_einer_Filete_und_Hei%C3%9Fpr%C3%A4gefolie_auf_einem_Buchr%C3%BCcken_der_mit_Leder_bezogen_ist.jpg">Bookbinder gilding a spine</a>, Cornettesax, CC0, adapted</li>
-            <li><a href="https://commons.wikimedia.org/wiki/File:Anvil,_northern_German_type_with_upsetting_block.jpg">Anvil with upsetting block</a>, Kleseus, CC0, adapted</li>
-          </ul>
-        </details>
-      </div>
+      <div class="footer__col"><h3 data-i18n="foot.play">Jogar</h3><ul>
+        <li><a href="#play-whoami" data-i18n="mode.whoami">Quem Sou Eu?</a></li>
+        <li><a href="#play-image" data-i18n="mode.image">Quem É Esse?</a></li>
+        <li><a href="#play-description" data-i18n="mode.description">Ficha do Caso</a></li>
+        <li><a href="#play-quote" data-i18n="mode.quote">Quem Disse?</a></li>
+        <li><a href="#play-episode" data-i18n="mode.episode">Detetive de Episódios</a></li></ul></div>
+      <div class="footer__col"><h3 data-i18n="foot.you">Você</h3><ul>
+        <li><a href="#stats" data-i18n="nav.stats">Números</a></li>
+        <li><a href="#history" data-i18n="nav.history">Histórico</a></li></ul></div>
+      <div class="footer__col"><h3 data-i18n="foot.game">Jogo</h3><ul>
+        <li><a href="#rules" data-i18n="nav.rules">Regras</a></li>
+        <li><button class="footer__btn" type="button" data-lang><span data-i18n="lang.switch">Read in English</span></button></li>
+        <li><button class="footer__btn" type="button" data-sound aria-pressed="false"><span data-sound-label>Som desligado</span></button></li></ul></div>
     </div>
+    <p class="footer__legal-note" data-i18n="foot.legal"></p>
+    <p class="footer__legal"><span>&copy; <span id="year">2026</span> Supernatural Guess Who?</span>
+      <span><span data-i18n="foot.credits">Fotos via Wikimedia Commons</span>: <a href="https://commons.wikimedia.org/wiki/File:624_Road,_Westfjords,_Iceland_(48802800941).jpg">Barry Marsh, PDM 1.0</a>; <a href="assets/characters/CREDITS.md" data-i18n="foot.actorCredits">créditos das fotos dos atores</a></span></p>
   </div>
 </footer>
 
 <script type="module" src="js/app.js"></script>
-<script type="module" src="vendor/taste/motion.js"></script>
 </body>
 </html>

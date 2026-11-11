@@ -3,10 +3,11 @@
  * Only names in the database are accepted; nicknames and aliases work too.
  */
 import { search, resolve, escapeHtml } from '../lib/text.js';
+import { t } from '../lib/i18n.js';
 
 let uid = 0;
 
-export function guessInput({ items, exclude = () => new Set(), onGuess, label = 'Your guess', placeholder = 'Type a name' }) {
+export function guessInput({ items, exclude = () => new Set(), onGuess, label = '', placeholder = '' }) {
   const id = `guess-${++uid}`;
   const form = document.createElement('form');
   form.className = 'guess';
@@ -20,7 +21,7 @@ export function guessInput({ items, exclude = () => new Set(), onGuess, label = 
           placeholder="${escapeHtml(placeholder)}">
         <ul class="guess__list" id="${id}-list" role="listbox" hidden></ul>
       </div>
-      <button class="btn btn--primary guess__btn" type="submit">Guess</button>
+      <button class="btn btn--primary guess__btn" type="submit">${escapeHtml(t('guess.btn'))}</button>
     </div>
     <p class="guess__error" id="${id}-err" aria-live="polite"></p>`;
 
@@ -56,7 +57,7 @@ export function guessInput({ items, exclude = () => new Set(), onGuess, label = 
 
   function commit(item) {
     if (!item) return;
-    if (exclude().has(item.id)) { err.textContent = 'You already tried that one.'; return; }
+    if (exclude().has(item.id)) { err.textContent = t('guess.dupe'); return; }
     input.value = '';
     close();
     onGuess(item);
@@ -78,10 +79,10 @@ export function guessInput({ items, exclude = () => new Set(), onGuess, label = 
   form.addEventListener('submit', e => {
     e.preventDefault();
     const text = input.value.trim();
-    if (!text) { err.textContent = 'Type a name first.'; return; }
+    if (!text) { err.textContent = t('guess.empty'); return; }
     const picked = !list.hidden && active >= 0 ? results[active]?.item : null;
     const item = picked ?? resolve(items, text) ?? (results.length === 1 ? results[0].item : null);
-    if (!item) { err.textContent = 'That name is not in the files. Pick one from the list.'; return; }
+    if (!item) { err.textContent = t('guess.unknown'); return; }
     commit(item);
   });
 
