@@ -20,15 +20,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Download freely licensed portraits
+      - name: Download character pictures
         env:
           IDS: ${{ inputs.ids }}
-        run: node tools/fetch-photos.mjs $IDS
+        run: node tools/fetch-character-images.mjs $IDS
       - name: Commit the pictures
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
           git add assets/characters js/data/images.js
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
-          git commit -m "Update character photos from Wikimedia Commons"
+          git commit -m "Update character pictures from the Supernatural Wiki"
           git push
