@@ -1,25 +1,27 @@
-/** Who Am I? Six clues, from vague to obvious. Each wrong guess opens the next one. */
+/** Who Am I? Six clues, from vague to obvious. Each wrong guess opens the next one; the last is the photograph. */
 import { IMAGES } from '../data/images.js';
 import { escapeHtml } from '../lib/text.js';
-import { characterPool, characterChips, clueList, p } from './shared.js';
+import { t } from '../lib/i18n.js';
+import { hints } from '../data/loc.js';
+import { characterPool, characterChips, clueList, p, letter } from './shared.js';
 
 function clues(c) {
   const img = IMAGES[c.id];
+  const hh = hints(c);
   return [
-    { label: 'Who they are', html: p(c.hints.vague) },
-    { label: 'First letter', html: `<p>Their name starts with <strong class="clue__big">${escapeHtml(c.name[0])}</strong></p>` },
-    { label: 'First appearance', html: p(`Season ${c.first.s}, episode ${c.first.e}.`) },
-    { label: 'Ties', html: p(c.hints.relation) },
-    { label: 'History', html: p(c.hints.history) },
-    { label: 'Look', html: img ? `<img class="clue__img" src="${escapeHtml(img)}" alt="A blurred picture of the character">` : p(c.hints.look) },
+    { label: t('c.who'), html: p(hh.vague) },
+    { label: t('c.letter'), html: letter(c.name) },
+    { label: t('c.first'), html: p(t('c.firstV', { s: c.first.s, e: c.first.e })) },
+    { label: t('c.ties'), html: p(hh.relation) },
+    { label: t('c.history'), html: p(hh.history) },
+    img
+      ? { label: t('c.photo'), html: `<figure class="snap snap--blur"><img src="${escapeHtml(img.src)}" alt="${escapeHtml(t('c.blurAlt'))}"></figure>` }
+      : { label: t('c.look'), html: p(hh.look) },
   ];
 }
 
 export default {
   id: 'whoami',
-  name: 'Who Am I?',
-  short: 'Six clues, from vague to obvious',
-  blurb: 'One vague clue to start. Each miss opens a sharper one, ending with their look.',
   max: 6,
   kind: 'character',
   levels: true,

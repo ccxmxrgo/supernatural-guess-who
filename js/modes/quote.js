@@ -2,15 +2,14 @@
 import { QUOTES } from '../data/quotes.js';
 import { CHARACTERS } from '../data/characters.js';
 import { escapeHtml } from '../lib/text.js';
-import { byLevel, characterChips, clueList, p } from './shared.js';
+import { t } from '../lib/i18n.js';
+import { species, quoteText, quoteContext } from '../data/loc.js';
+import { byLevel, characterChips, clueList, p, letter } from './shared.js';
 
 const who = q => CHARACTERS.find(c => c.id === q.by);
 
 export default {
   id: 'quote',
-  name: 'Quote Challenge',
-  short: 'Who said it?',
-  blurb: 'One line from the show, from catchphrases to deep cuts. Name the speaker in five guesses.',
   max: 5,
   kind: 'character',
   levels: true,
@@ -19,14 +18,14 @@ export default {
   board(q, st) {
     const c = who(q);
     const extra = [
-      { label: 'Species', html: p(c.species) },
-      { label: 'First seen', html: p(`Season ${c.first.s}.`) },
-      { label: 'First letter', html: `<p>Their name starts with <strong class="clue__big">${escapeHtml(c.name[0])}</strong></p>` },
-      { label: 'When it was said', html: p(q.context) },
+      { label: t('c.species'), html: p(species(c.species)) },
+      { label: t('c.firstSeen'), html: p(t('c.firstSeenV', { s: c.first.s })) },
+      { label: t('c.letter'), html: letter(c.name) },
+      { label: t('c.when'), html: p(quoteContext(q)) },
     ];
     const open = st.done ? extra.length : Math.min(extra.length, st.wrong);
-    return `<blockquote class="quote"><p>“${escapeHtml(q.text)}”</p></blockquote>
-      ${open || st.done ? clueList(extra, open, st.fresh && open > 1) : '<p class="board__note">A wrong guess opens a hint about the speaker.</p>'}`;
+    return `<blockquote class="quote"><p>“${escapeHtml(quoteText(q))}”</p></blockquote>
+      ${open || st.done ? clueList(extra, open, st.fresh && open > 1) : `<p class="board__note">${escapeHtml(t('quote.note'))}</p>`}`;
   },
   chips: characterChips,
 };

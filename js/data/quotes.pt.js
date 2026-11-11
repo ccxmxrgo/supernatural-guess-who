@@ -1,0 +1,20 @@
+/** Portuguese (Brazil) quotes: our own translations of short lines, with context. */
+export const QUOTES_PT = {
+  'q-family-business': { text: 'Salvar pessoas, caçar coisas. O negócio da família.', context: 'A frase que resume o trabalho dos irmãos, da primeira temporada.' },
+  'q-driver-picks': { text: 'O motorista escolhe a música, o carona cala a boca.', context: 'Regra da casa no Impala, definida no Piloto.' },
+  'q-jerk': { text: 'Babaca.', context: 'A resposta padrão sempre que o irmão o chama daquela outra palavra.' },
+  'q-angel-of-the-lord': { text: 'Eu sou um anjo do Senhor.', context: 'A apresentação seca num celeiro cheio de lâmpadas estourando.' },
+  'q-gripped-you-tight': { text: 'Fui eu quem te segurou firme e te tirou da perdição.', context: 'Explicando a marca de mão no ombro do Dean, na quarta temporada.' },
+  'q-assbutt': { text: 'Afaste-se, bundão.', context: 'Dito a um arcanjo, logo antes de um coquetel molotov de óleo sagrado.' },
+  'q-idjits': { text: 'Idiotas.', context: 'A palavra que ele usa para tudo quando fala de dois garotos que ama.' },
+  'q-family-blood': { text: 'Família não termina no sangue, garoto.', context: 'Conselho ao Dean sobre quem realmente conta como família.' },
+  'q-balls': { text: 'Droga!', context: 'Uma exclamação favorita quando tudo dá errado.' },
+  'q-hello-boys': { text: 'Olá, rapazes.', context: 'O cumprimento marca registrada, sempre chegando por trás.' },
+  'q-moose': { text: 'Olá, Alce.', context: 'O apelido que ele deu ao irmão mais alto.' },
+  'q-clarence': { text: 'Oi, Clarence.', context: 'O apelido dela para um certo anjo, tirado de um filme de Natal.' },
+  'q-reap-god': { text: 'Deus também. Vou ceifá-Lo também.', context: 'Uma resposta calma sobre se algo estaria fora do alcance dele.' },
+  'q-endings-hard': { text: 'Finais são difíceis.', context: 'Narrando o fim da quinta temporada.' },
+  'q-angels-watching': { text: 'Os anjos estão cuidando de você.', context: 'O que ela dizia ao filho na hora de dormir, na noite em que tudo mudou.' },
+  'q-has-to-be-you': { text: 'Tem que ser você, Sam.', context: 'Visitando o Sam num sonho para explicar as regras do receptáculo.' },
+  'q-nougat': { text: 'Eu gosto de torrone.', context: 'Uma das primeiras coisas que ele descobriu sobre o mundo.' },
+};
