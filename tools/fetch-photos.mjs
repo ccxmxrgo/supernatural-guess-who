@@ -25,13 +25,13 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function api(host, params) {
   const url = `https://${host}/w/api.php?` + new URLSearchParams({ format: 'json', formatversion: '2', origin: '*', ...params });
-  for (let attempt = 0; attempt < 4; attempt++) {
+  for (let attempt = 0; attempt < 5; attempt++) {
     let res;
     try { res = await fetch(url, { headers: { 'User-Agent': UA, 'Api-User-Agent': UA }, signal: AbortSignal.timeout(20000) }); }
-    catch (err) { console.log(`  retry after ${err.name}: ${host}`); await sleep(1500 * 2 ** attempt); continue; }
+    catch (err) { console.log(`  retry after ${err.name}: ${host}`); await sleep(4000 * 2 ** attempt); continue; }
     if (res.ok) return res.json();
     console.log(`  ${res.status} from ${host}`);
-    if (res.status === 429 || res.status >= 500) { await sleep(1500 * 2 ** attempt); continue; }
+    if (res.status === 429 || res.status >= 500) { await sleep(4000 * 2 ** attempt); continue; }
     throw new Error(`${res.status} ${url}`);
   }
   throw new Error(`gave up: ${url}`);
@@ -115,7 +115,7 @@ async function main() {
     } catch (err) {
       missed.push(`${id}: ${err.message}`);
     }
-    await sleep(300);
+    await sleep(1500);
   }
 
   const sorted = Object.fromEntries(Object.entries(out).sort(([a], [b]) => a.localeCompare(b)));
