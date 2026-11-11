@@ -35,7 +35,7 @@ const S = {
 
     'daily.h': "Today's cases.", 'daily.sub': 'Day {day}, the same answers for every hunter.',
     'daily.notPlayed': 'Not played yet', 'daily.progress': 'In progress, {n} of {max} guesses used',
-    'daily.won': 'Solved in {n} of {max}', 'daily.lost': 'Missed today', 'daily.noPhotos': 'Opens once the photographs are in',
+    'daily.won': 'Solved in {n} of {max}', 'daily.lost': 'Missed today', 'daily.noPhotos': 'Opens once the pictures are in',
     'daily.play': 'Play', 'daily.result': 'See result', 'daily.next': 'New cases in',
 
     'modes.h': 'Five game modes.', 'modes.sub': 'Each has a daily case and endless random rounds.',
@@ -89,18 +89,18 @@ const S = {
     'rules.p3': 'Each mode has one daily case, the same for every player, that changes at 00:00 UTC. Random rounds are endless and let you pick easy, medium or hard files.',
     'rules.p4': 'Sharing a result copies coloured squares and your score, never the answer.',
     'rules.p5': 'Supernatural Guess Who? is an unofficial fan game. It is not affiliated with or endorsed by Warner Bros., The CW or Kripke Enterprises. Supernatural and its characters belong to their owners.',
-    'rules.p6': 'Clues and descriptions are written for this game. Quotes are short lines used for a trivia game. Photographs of the actors come from Wikimedia Commons under free licences, credited in the footer.',
+    'rules.p6': 'Clues and descriptions are written for this game. Quotes are short lines used for a trivia game. Character pictures are stills from the show, via the Supernatural Wiki, listed in the footer.',
     'rules.p7': 'Your stats stay in this browser. There are no accounts, trackers or ads.',
 
     'mode.whoami': 'Who Am I?', 'mode.whoami.short': 'Six clues, from vague to obvious', 'mode.whoami.blurb': 'One vague clue to start. Each miss opens a sharper one, ending with their photograph.',
     'mode.description': 'Case File', 'mode.description.short': 'Name them from a written description', 'mode.description.blurb': "A hunter's notes on someone, name withheld. Each miss adds a line.",
     'mode.quote': 'Quote Challenge', 'mode.quote.short': 'Who said it?', 'mode.quote.blurb': 'One line from the show, from catchphrases to deep cuts. Name the speaker in five guesses.',
     'mode.episode': 'Episode Detective', 'mode.episode.short': 'Name the episode from case notes', 'mode.episode.blurb': 'Case notes from one of 15 seasons. Each miss adds the season, setting or plot.',
-    'mode.image': 'Who’s That?', 'mode.image.short': 'A blurred photograph that sharpens', 'mode.image.blurb': 'A photograph pixelated past recognition. Every wrong guess sharpens it.',
+    'mode.image': 'Who’s That?', 'mode.image.short': 'A blurred picture that sharpens', 'mode.image.blurb': 'A photograph pixelated past recognition. Every wrong guess sharpens it.',
 
     'c.who': 'Who they are', 'c.letter': 'First letter', 'c.first': 'First appearance', 'c.ties': 'Ties', 'c.history': 'History', 'c.look': 'Look', 'c.photo': 'Photograph',
     'c.firstV': 'Season {s}, episode {e}.', 'c.species': 'Species', 'c.firstSeen': 'First seen', 'c.firstSeenV': 'Season {s}.', 'c.when': 'When it was said',
-    'c.blurAlt': 'A blurred photograph of the actor', 'c.pixAlt': 'A pixelated photograph of the actor',
+    'c.blurAlt': 'A blurred picture of the character', 'c.pixAlt': 'A pixelated picture of the character',
     'file.label': 'Case file, name withheld', 'file.species': 'Species: {v}.', 'file.letter': 'Name starts with “{v}”.',
     'quote.note': 'A wrong guess opens a hint about the speaker.',
     'ep.case': 'The case', 'ep.season': 'Season', 'ep.seasonV': 'Season {s}.', 'ep.setting': 'Setting', 'ep.against': 'What you are up against', 'ep.happens': 'What happens', 'ep.giveaway': 'The giveaway',
@@ -182,7 +182,7 @@ const S = {
     'rules.p3': 'Cada modo tem um caso diário, igual para todo mundo, que muda às 00:00 UTC (21:00 em Brasília). As rodadas aleatórias não acabam e têm fichas fáceis, médias ou difíceis.',
     'rules.p4': 'Compartilhar copia quadradinhos coloridos e sua pontuação, nunca a resposta.',
     'rules.p5': 'Supernatural Guess Who? é um jogo de fã, não oficial. Não tem ligação nem apoio da Warner Bros., The CW ou Kripke Enterprises. Supernatural e seus personagens pertencem aos seus donos.',
-    'rules.p6': 'As pistas e descrições foram escritas para este jogo. As frases são falas curtas usadas como curiosidade. As fotos dos atores vêm do Wikimedia Commons com licenças livres, com créditos no rodapé.',
+    'rules.p6': 'As pistas e descrições foram escritas para este jogo. As frases são falas curtas usadas como curiosidade. As imagens dos personagens são cenas da série, tiradas da Supernatural Wiki, com a lista no rodapé.',
     'rules.p7': 'Seus números ficam neste navegador. Não tem conta, rastreador nem anúncio.',
 
     'mode.whoami': 'Quem Sou Eu?', 'mode.whoami.short': 'Seis pistas, do vago ao óbvio', 'mode.whoami.blurb': 'Começa com uma pista vaga. Cada erro abre uma mais clara, e a última é a foto.',
@@ -193,7 +193,7 @@ const S = {
 
     'c.who': 'Quem é', 'c.letter': 'Primeira letra', 'c.first': 'Primeira aparição', 'c.ties': 'Laços', 'c.history': 'História', 'c.look': 'Aparência', 'c.photo': 'Foto',
     'c.firstV': 'Temporada {s}, episódio {e}.', 'c.species': 'Espécie', 'c.firstSeen': 'Estreia', 'c.firstSeenV': 'Temporada {s}.', 'c.when': 'Quando foi dito',
-    'c.blurAlt': 'Uma foto borrada do ator', 'c.pixAlt': 'Uma foto pixelada do ator',
+    'c.blurAlt': 'Uma imagem borrada do personagem', 'c.pixAlt': 'Uma imagem pixelada do personagem',
     'file.label': 'Ficha do caso, nome ocultado', 'file.species': 'Espécie: {v}.', 'file.letter': 'O nome começa com “{v}”.',
     'quote.note': 'Cada erro abre uma dica sobre quem falou.',
     'ep.case': 'O caso', 'ep.season': 'Temporada', 'ep.seasonV': 'Temporada {s}.', 'ep.setting': 'Lugar', 'ep.against': 'Contra o quê', 'ep.happens': 'O que acontece', 'ep.giveaway': 'A entregada',

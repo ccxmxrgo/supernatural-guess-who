@@ -180,12 +180,12 @@ a.mode:hover .mode__name { color: var(--red); }
 .board__note { color: var(--muted); font-size: 14px; padding-left: clamp(44px, 9vw, 56px); }
 .quote + .clues { border-top: 1px solid var(--line); padding-top: 4px; }
 
-.snap { margin: 6px 0 0; width: min(100%, 300px); background: #fff; padding: 8px; box-shadow: 0 6px 16px -8px rgba(0, 0, 0, .5); }
+.snap { margin: 6px 0 0; width: min(100%, 380px); background: #fff; padding: 8px; box-shadow: 0 6px 16px -8px rgba(0, 0, 0, .5); }
 .snap--blur { overflow: hidden; }
-.snap img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 22%; }
+.snap img { width: 100%; height: auto; }
 .snap--blur img { filter: blur(9px); transform: scale(1.08); }
-.snap--pixel { width: min(100%, 340px); margin: 0 auto; }
-.snap--pixel canvas { display: block; width: 100%; height: auto; aspect-ratio: 480 / 560; image-rendering: pixelated; background: #d8c9a8; }
+.snap--pixel { width: min(100%, 460px); margin: 0 auto; }
+.snap--pixel canvas { display: block; width: 100%; height: auto; min-height: 120px; image-rendering: pixelated; background: #d8c9a8; }
 .snap__credit, .result__credit { font-size: 11px; line-height: 1.35; color: var(--muted); margin-top: 6px; }
 
 /* the guess field */
@@ -238,12 +238,12 @@ a.mode:hover .mode__name { color: var(--red); }
 @media (max-width: 479px) { .cell { font-size: 12px; padding: 6px 4px; } .cell.cell--name { font-size: 21px; padding: 6px 10px; } }
 
 /* the result */
-.result__card { display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: start; padding: 20px; background: var(--paper-hi); color: var(--ink); border-radius: 4px; box-shadow: 0 14px 34px -16px rgba(0, 0, 0, .85); border-top: 5px solid var(--ok); }
+.result__card { display: grid; grid-template-columns: 260px 1fr; gap: 24px; align-items: start; padding: 20px; background: var(--paper-hi); color: var(--ink); border-radius: 4px; box-shadow: 0 14px 34px -16px rgba(0, 0, 0, .85); border-top: 5px solid var(--ok); }
 .result--lose .result__card { border-top-color: var(--no); }
 .result__card:not(:has(.result__photo)) { grid-template-columns: 1fr; text-align: center; justify-items: center; }
 .result__card:not(:has(.result__photo)) .btn-row { justify-content: center; }
 .result__photo { margin: 0; background: #fff; padding: 8px; box-shadow: 0 6px 16px -8px rgba(0, 0, 0, .5); }
-.result__img { aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 22%; width: 100%; }
+.result__img { width: 100%; height: auto; }
 .result__text { display: grid; gap: 10px; align-content: start; }
 .result__verdict { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--ok); }
 .result--lose .result__verdict { color: var(--no); }
@@ -255,7 +255,7 @@ a.mode:hover .mode__name { color: var(--red); }
 .result .btn--secondary { color: var(--ink); }
 .result.is-new .result__card { animation: ink-in 520ms var(--ease) both; }
 .circled { display: inline-block; padding: .02em .3em .06em; border: 2.5px solid var(--red); border-radius: 255px 18px 225px 18px / 18px 225px 18px 255px; }
-@media (max-width: 559px) { .result__card { grid-template-columns: 1fr; } .result__photo { max-width: 200px; } }
+@media (max-width: 559px) { .result__card { grid-template-columns: 1fr; } .result__photo { max-width: 320px; } }
 
 /* ---------- stats, history, rules */
 .page { max-width: var(--col-game); margin: 0 auto; padding: 24px 16px 56px; }

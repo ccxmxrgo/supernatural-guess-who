@@ -12,6 +12,8 @@ const cache = new Map();
 function draw(canvas, src, block) {
   const ctx = canvas.getContext('2d');
   const paint = img => {
+    // the canvas takes the picture's own shape, so wide stills keep every face in frame
+    canvas.width = 480; canvas.height = Math.round(480 * img.naturalHeight / img.naturalWidth);
     const w = canvas.width, h = canvas.height;
     // cover, keeping the face (upper third) in frame
     const r = Math.max(w / img.naturalWidth, h / img.naturalHeight);
