@@ -22,7 +22,6 @@ Portraits of the actors, from Wikimedia Commons, under the licences listed.
 - **dean-winchester** (Jensen Ackles): Mandilea16, CC BY 4.0. https://commons.wikimedia.org/wiki/File:Jensen_Ackles_at_Creation_Entertainment_in_Orlando_2026-2.jpg
 - **death** (Julian Richings): Gage Skidmore, CC BY-SA 3.0. https://commons.wikimedia.org/wiki/File:Julian_Richings_by_Gage_Skidmore.jpg
 - **ed-zeddmore** (A. J. Buckley): Drinkin' Bros Podcast, CC BY 3.0. https://commons.wikimedia.org/wiki/File:A.J._Buckley_2020.png
-- **famine** (James Otis): John Mathew Smith & www.celebrity-photos.com, CC BY-SA 4.0. https://commons.wikimedia.org/wiki/File:Otis_Williams_(Retouched).jpg
 - **gabriel** (Richard Speight Jr.): Gage Skidmore from Peoria, AZ, CC BY-SA 2.0. https://commons.wikimedia.org/wiki/File:Richard_Speight_Jr._by_Gage_Skidmore_2016_(cropped).jpg
 - **gadreel** (Tahmoh Penikett): Gage Skidmore, CC BY-SA 3.0. https://commons.wikimedia.org/wiki/File:Tahmoh_Penikett_by_Gage_Skidmore.jpg
 - **garth** (DJ Qualls): Katherine Kinkead, CC BY 2.0. https://commons.wikimedia.org/wiki/File:DJ_Qualls_(cropped).jpg
@@ -33,7 +32,6 @@ Portraits of the actors, from Wikimedia Commons, under the licences listed.
 - **jo-harvelle** (Alona Tal): Kevin Paul, CC BY 4.0. https://commons.wikimedia.org/wiki/File:Alona_Tal_-_Cross.jpg
 - **jody-mills** (Kim Rhodes): Megan Jackson, CC BY-SA 4.0. https://commons.wikimedia.org/wiki/File:Kim_Rhodes_in_Cleveland,_OH,_2018.jpg
 - **john-winchester** (Jeffrey Dean Morgan): Mandilea16, CC BY 4.0. https://commons.wikimedia.org/wiki/File:Jeffrey_Dean_Morgan_at_San_Diego_Comic_Con_2026-3.jpg
-- **joshua** (Roger Aaron Brown): Pre-1978 no mark, Public domain. https://commons.wikimedia.org/wiki/File:Peter_Brown_Lawman_1959.jpg
 - **kali** (Rekha Sharma): Crosa from Nuernberg, CC BY 2.0. https://commons.wikimedia.org/wiki/File:Rekha_Sharma_(28708730928)_(cropped).jpg
 - **kelly-kline** (Courtney Ford): m anima from sunnyvale, USA, CC BY 2.0. https://commons.wikimedia.org/wiki/File:Courtney_Ford.jpg
 - **kevin-tran** (Osric Chau): JaceMerlyn, CC BY-SA 4.0. https://commons.wikimedia.org/wiki/File:Osric_Chau_at_Comic_Con_Connections_26_02.jpg
@@ -42,7 +40,6 @@ Portraits of the actors, from Wikimedia Commons, under the licences listed.
 - **mary-winchester** (Samantha Smith): Fandomuniverse, CC0. https://commons.wikimedia.org/wiki/File:Samantha_Smith_at_MEGACON_Orlando_2025.png
 - **meg-masters** (Rachel Miner): Katherine Kinkead, CC BY 2.0. https://commons.wikimedia.org/wiki/File:RachelMiner1.jpg
 - **metatron** (Curtis Armstrong): Miguel Discart & Kiri Karma, CC BY-SA 4.0. https://commons.wikimedia.org/wiki/File:Curtis_Armstrong.jpg
-- **michael** (Matt Cohen): Raph_PH, CC BY 2.0. https://commons.wikimedia.org/wiki/File:Sacha_Baron_Cohen_(2024)_(3x4_cropped).jpg
 - **missouri-mosley** (Loretta Devine): Jesse Kornblum, CC BY-SA 4.0. https://commons.wikimedia.org/wiki/File:Loretta_Devine_BraveMaker_2026_01.jpg
 - **naomi** (Amanda Tapping): Gage Skidmore, CC BY-SA 3.0. https://commons.wikimedia.org/wiki/File:Amanda_Tapping_by_Gage_Skidmore.jpg
 - **pamela-barnes** (Traci Dinwiddie): Kris Korn, of K2Foto. Work for hire owned by Traci Dinwiddie, CC BY-SA 3.0. https://commons.wikimedia.org/wiki/File:Traci_Dinwiddie.jpg

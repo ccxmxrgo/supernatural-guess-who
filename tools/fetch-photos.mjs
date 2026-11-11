@@ -54,8 +54,9 @@ async function findPortrait(actor, title) {
   const first = await tryTitles([title ?? actor]);
   if (first) return first;
   const search = await api('en.wikipedia.org', { action: 'query', list: 'search', srsearch: `${actor} actor`, srlimit: '5' });
-  const surname = actor.split(' ').filter((w) => !/^(jr\.?|sr\.?)$/i.test(w)).pop().toLowerCase();
-  const candidates = (search.query?.search ?? []).map((r) => r.title).filter((t) => t.toLowerCase().includes(surname));
+  // only articles whose title carries every part of the actor's name (stops "Matt Cohen" matching "Sacha Baron Cohen")
+  const parts = actor.toLowerCase().split(/\s+/).filter((w) => !/^(jr\.?|sr\.?)$/.test(w));
+  const candidates = (search.query?.search ?? []).map((r) => r.title).filter((t) => parts.every((w) => t.toLowerCase().includes(w)));
   return candidates.length ? tryTitles(candidates) : null;
 }
 
