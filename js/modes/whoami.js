@@ -5,7 +5,7 @@ import { t } from '../lib/i18n.js';
 import { hints } from '../data/loc.js';
 import { characterPool, characterChips, clueList, p, letter } from './shared.js';
 
-function clues(c) {
+function clues(c, done) {
   const img = IMAGES[c.id];
   const hh = hints(c);
   return [
@@ -15,7 +15,7 @@ function clues(c) {
     { label: t('c.ties'), html: p(hh.relation) },
     { label: t('c.history'), html: p(hh.history) },
     img
-      ? { label: t('c.photo'), html: `<figure class="snap snap--blur"><img src="${escapeHtml(img.src)}" alt="${escapeHtml(t('c.blurAlt'))}"></figure>` }
+      ? { label: t('c.photo'), html: `<figure class="snap${done ? '' : ' snap--blur'}"><img src="${escapeHtml(img.src)}" alt="${escapeHtml(t('c.blurAlt'))}"></figure>` }
       : { label: t('c.look'), html: p(hh.look) },
   ];
 }
@@ -26,6 +26,6 @@ export default {
   kind: 'character',
   levels: true,
   pool: characterPool,
-  board: (c, st) => clueList(clues(c), st.done ? 6 : Math.min(6, st.wrong + 1), st.fresh),
+  board: (c, st) => clueList(clues(c, st.done), st.done ? 6 : Math.min(6, st.wrong + 1), st.fresh),
   chips: characterChips,
 };
